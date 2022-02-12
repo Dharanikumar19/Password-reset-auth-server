@@ -42,23 +42,23 @@ router.post("/", async (req, res) => {
 	}
 });
 
-// // verify password reset link
-// router.get("/:id/:token", async (req, res) => {
-// 	try {
-// 		const user = await User.findOne({ _id: req.params.id });
-// 		if (!user) return res.status(400).send({ message: "Invalid link" });
+// verify password reset link
+router.get("/:id/:token", async (req, res) => {
+	try {
+		const user = await User.findOne({ _id: req.params.id });
+		if (!user) return res.status(400).send({ message: "Invalid link" });
 
-// 		const token = await Token.findOne({
-// 			userId: user._id,
-// 			token: req.params.token,
-// 		});
-// 		if (!token) return res.status(400).send({ message: "Invalid link" });
+		const token = await Token.findOne({
+			userId: user._id,
+			token: req.params.token,
+		});
+		if (!token) return res.status(400).send({ message: "Invalid link" });
 
-// 		res.status(200).send("Valid Url");
-// 	} catch (error) {
-// 		res.status(500).send({ message: "Internal Server Error" });
-// 	}
-// });
+		res.status(200).send("Valid Url");
+	} catch (error) {
+		res.status(500).send({ message: "Internal Server Error" });
+	}
+});
 
 //  set new password
 router.post("/:id/:token", async (req, res) => {
@@ -78,6 +78,8 @@ router.post("/:id/:token", async (req, res) => {
 			token: req.params.token,
 		});
 		if (!token) return res.status(400).send({ message: "Invalid link" });
+
+		if (!user.verified) user.verified = true;
 
 		const salt = await bcrypt.genSalt(Number(process.env.SALT));
 		const hashPassword = await bcrypt.hash(req.body.password, salt);
