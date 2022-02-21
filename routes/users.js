@@ -19,9 +19,7 @@ router.post("/", async (req, res) => {
 
 		user = await new User({ ...req.body, password: hashPassword }).save();
 
-		res
-			.status(201)
-			.send({ message: "Registration success you are ready to login" });
+		res.status(201).send({ message: "Registration success you are ready to login" });
 	} catch (error) {
 		console.log(error);
 		res.status(500).send({ message: "Internal Server Error" });
