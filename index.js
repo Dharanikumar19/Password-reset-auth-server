@@ -17,7 +17,7 @@ app.use(cors());
 // routes
 app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
-app.use("/password-reset", passwordResetRoutes);
+app.use("/password-reset/:id/:token", passwordResetRoutes);
 
 const port = process.env.PORT || 8080;
 app.listen(port, console.log(`Listening on port ${port}`));
